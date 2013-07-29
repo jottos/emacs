@@ -194,7 +194,10 @@
 (add-to-list 'auto-mode-alist '("\\.py\\'"  . python-mode))
 (setq py-install-directory "~/.emacs.d/python-mode.el-6.1.1/")
 (add-to-list 'load-path py-install-directory)
-(require 'python-mode)
+(if (Emacs-version "GNU Emacs 24")
+    (require 'python-mode)
+  (message "emacs version too low, not including python-mode"))
+
 
 ;; fix the wierd comint mode highlighting problems use the comint output filter
 ;; capabilities to hack out the escape sequence that would be in prior versions
@@ -218,11 +221,16 @@
 ;;
 
 
-(require 'fill-column-indicator-settings)
-(require 'text-settings)
+(if window-system
+    (progn
+      (require 'fill-column-indicator-settings)
+      (require 'text-settings)))
 (require 'auto-complete-settings)
 (require 'ido-settings)
-(require 'ess-settings)
+(if (Emacs-version "GNU Emacs 24")
+    (require 'ess-settings)
+  (message "emacs version too low, not including ess package"))
+
 
 ;;
 ;; Setup preferred function keys
