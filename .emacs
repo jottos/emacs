@@ -164,8 +164,6 @@
 ;;
 ;; we're just adding items 1 by 1, the old code no longer
 ;; suitable to versions from emacs 22
-(add-to-list 'auto-mode-alist '("\\.scala\\'" . scala-mode))
-(autoload 'scala-mode "scala-mode")
 (add-to-list 'auto-mode-alist '("\\.mm\\'" . objc-mode))
 (add-to-list 'auto-mode-alist '("\\.h\\'" . objc-mode))
 
@@ -230,7 +228,7 @@
 (if (Emacs-version "GNU Emacs 24")
     (require 'ess-settings)
   (message "emacs version too low, not including ess package"))
-
+(require 'scala-mode-settings)
 
 ;;
 ;; Setup preferred function keys
