@@ -164,8 +164,6 @@
 ;;
 ;; we're just adding items 1 by 1, the old code no longer
 ;; suitable to versions from emacs 22
-(add-to-list 'auto-mode-alist '("\\.scala\\'" . scala-mode))
-(autoload 'scala-mode "scala-mode")
 (add-to-list 'auto-mode-alist '("\\.mm\\'" . objc-mode))
 (add-to-list 'auto-mode-alist '("\\.h\\'" . objc-mode))
 
@@ -220,7 +218,6 @@
 ;;    "\\[0;31m\\|\\[1;31m\\|\\[0m1\\|\\|\\[0;34m\\|\\[1;34m\\|\\[0m\\|"
 ;;
 
-
 (if window-system
     (progn
       (require 'fill-column-indicator-settings)
@@ -230,7 +227,7 @@
 (if (Emacs-version "GNU Emacs 24")
     (require 'ess-settings)
   (message "emacs version too low, not including ess package"))
-
+(require 'scala-mode-settings)
 
 ;;
 ;; Setup preferred function keys
@@ -356,3 +353,17 @@
 
 
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(send-mail-function (quote smtpmail-send-it))
+ '(smtpmail-smtp-server "smtp.gmail.com")
+ '(smtpmail-smtp-service 587))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
