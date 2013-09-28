@@ -233,23 +233,24 @@
 ;;
 ;; for some reason ^Q has been hi-jacked so we'll set C-c C-i to quoted-insert
 ;;
-(global-set-key "\C-c\C-i"    'quoted-insert)
+(global-set-key (kbd "C-c C-i") 'quoted-insert)
 
 ;;
 ;; start a shell
 ;;
-(global-set-key "\^x\^m"    'shell)
+(global-set-key (kbd "C-x C-m") 'shell)
 
 ;;
 ;; nukes whitespace intelligently
 ;;
-(global-set-key "\C-\M-m"     'fixup-whitespace)
+(global-set-key (kbd "C-M-m")  'fixup-whitespace)
 
 ;;
 ;; remap backspace to delete and help to c-x c-h
 ;;
-(global-set-key "\^h"    'delete-backward-char)
-(global-set-key "\^x\^h" 'help-for-help       )
+(global-set-key (kbd "C-h")    'delete-backward-char)
+
+(global-set-key (kbd "C-x C-h") 'help-for-help)
 
 ;;Reassign for incremental search as well
 (setq search-delete-char 8) ; 8 is back space
@@ -257,19 +258,18 @@
 ;;
 ;; write-region to C-x w, used to be command widen
 ;;
-(global-set-key "\C-xw" 'write-region)
+(global-set-key (kbd "C-x w") 'write-region)
 
 ;;
 ;; Use electric-buffer-edit instead of list-buffers
 ;;
-;;(global-set-key "\C-x\C-c\C-b" 'electric-buffer-list)
-(global-set-key "\C-x\C-b" 'electric-buffer-list)
+(global-set-key (kbd "C-x C-b") 'electric-buffer-list)
 
 ;; set up  goto-line with a key def
-(global-set-key  "\^x\^g" 'goto-line)
+(global-set-key  (kbd "C-x C-g") 'goto-line)
 
 ;; remap zap-to-char from M-z to c-x c-z
-(global-set-key  "\^x\^z" 'zap-to-char)
+(global-set-key  (kbd "C-x C-z") 'zap-to-char)
 
 ;;; set up  scroll window by one defs
 ;; these defs for basic emacs, bindings are epsilon equivelents
@@ -281,8 +281,8 @@
   (interactive)
   (scroll-down 1))
 
-(global-set-key  "\^z" 'scroll-one-up)
-(global-set-key  [M-z] 'scroll-one-down)
+(global-set-key  (kbd "C-z") 'scroll-one-up)
+(global-set-key  (kbd "M-z") 'scroll-one-down)
 
 
 ;; set up  compile key def, prompts for make cmd and directory
