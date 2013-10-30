@@ -84,6 +84,8 @@
        ((eq system-type 'windows-nt) ;; nt emacs
         (set-background-color "black"))
        ((eq system-type 'darwin) 
+        (set-background-color "black"))
+       ((eq system-type 'x) 
         (set-background-color "black")))
 
       (GNUEmacs
@@ -222,9 +224,10 @@
 (require 'auto-complete-settings)
 (require 'ido-settings)
 (if (Emacs-version "GNU Emacs 24")
-    (require 'ess-settings)
-  (message "emacs version too low, not including ess package"))
-(require 'scala-mode-settings)
+    (progn
+      (require 'scala-mode-settings)
+      (require 'ess-settings))
+  (message "emacs version too low, not including ess or scala packages"))
 
 ;;
 ;; Setup preferred function keys
