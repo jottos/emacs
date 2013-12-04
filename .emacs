@@ -142,7 +142,7 @@
 (put 'narrow-to-region 'disabled nil)
 
 ;;Turn on syntax highlighting everywhere
-(global-font-lock-mode)
+(global-font-lock-mode t)
 
 ;;; self explanatory, set to your favorite width
 (setq tab-width 2)

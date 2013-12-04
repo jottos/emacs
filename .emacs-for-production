@@ -49,14 +49,14 @@
 
 (set 'load-path
      (append load-path
-	          (list
-		         "C:/Users/jos/Desktop/Programming/vm-7.19/lisp/vm"
-			       "c:/users/jos/Desktop/Programming/scala/scala-2.7.5.final/misc/scala-tool-support/emacs"
-			             (concat path-root "/Documents/workspace/tools/emacs")
-				           (concat path-root "/tools/lisp")
-					         (concat path-root "/tools/lisp/js-mode")
-						       (concat path-root "/tools/lisp/mmm-mode")
-						             (concat path-root "/tools/lisp/psgml-1.3.1"))))
+	     (list
+	      "C:/Users/jos/Desktop/Programming/vm-7.19/lisp/vm"
+	      "c:/users/jos/Desktop/Programming/scala/scala-2.7.5.final/misc/scala-tool-support/emacs"
+	      (concat path-root "/Documents/workspace/tools/emacs")
+	      (concat path-root "/tools/lisp")
+	      (concat path-root "/tools/lisp/js-mode")
+	      (concat path-root "/tools/lisp/mmm-mode")
+	      (concat path-root "/tools/lisp/psgml-1.3.1"))))
 
 ;; for old style NT Emacs, which did not have an installer, we help out
 (cond
@@ -95,10 +95,10 @@
        ;; setup alist for future frames
        (setq default-frame-alist
              (list
-	            (cons 'left                 350)
-		          (cons 'top                  0)
-			        (cons 'width                80)
-				      (cons 'height               45)
+	      (cons 'left                 350)
+	      (cons 'top                  0)
+	      (cons 'width                80)
+	      (cons 'height               45)
               (cons 'minibuffer           t)
               (cons 'menu-bar-lines       0)
               (cons 'border-color         "black")
@@ -159,7 +159,7 @@
 (put 'narrow-to-region 'disabled nil)
 
 ;;Turn on syntax highlighting everywhere
-(global-font-lock-mode)
+(global-font-lock-mode t)
 
 ;;; self explanatory, set to your favorite width
 (setq tab-width 2)
@@ -188,6 +188,10 @@
 (autoload 'scala-mode "scala-mode")
 (add-to-list 'auto-mode-alist '("\\.mm\\'" . objc-mode))
 (add-to-list 'auto-mode-alist '("\\.h\\'" . objc-mode))
+
+(add-to-list 'auto-mode-alist '("\\.yaml\\'" . conf-mode))
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . conf-mode))
+
 
 ;; javascript lib will not load on bare install older < 23 version of emacs
 ;(add-to-list 'auto-mode-alist '("\\.as\\'" . javascript-mode))
