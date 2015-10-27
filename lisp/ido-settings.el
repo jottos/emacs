@@ -6,3 +6,4 @@
 (ido-mode t)
 
 (provide 'ido-settings)
+(setq ido-create-new-buffer 'always)
