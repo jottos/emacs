@@ -194,7 +194,8 @@
 (add-to-list 'auto-mode-alist '("\\.py\\'"  . python-mode))
 (setq py-install-directory "~/.emacs.d/python-mode.el-6.1.1/")
 (add-to-list 'load-path py-install-directory)
-(require 'python-mode)
+(if (Emacs-version "GNU Emacs 24")
+    (require 'python-mode))
 
 ;; fix the wierd comint mode highlighting problems use the comint output filter
 ;; capabilities to hack out the escape sequence that would be in prior versions
