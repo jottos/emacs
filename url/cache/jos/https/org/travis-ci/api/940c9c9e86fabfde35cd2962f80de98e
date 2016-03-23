@@ -1,0 +1,29 @@
+HTTP/1.1 200 OK
+Connection: keep-alive
+Server: nginx
+Date: Tue, 22 Mar 2016 18:21:18 GMT
+Content-Type: image/svg+xml
+Content-Length: 357
+Status: 200 OK
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+Access-Control-Expose-Headers: Content-Type, Cache-Control, Expires, Etag, Last-Modified
+Strict-Transport-Security: max-age=31536000
+X-Endpoint: Travis::Api::App::Endpoint::Repos
+X-Pattern: /:owner_name/:name
+X-Oauth-Scopes: public
+X-Accepted-Oauth-Scopes: public
+Vary: Accept,Accept-Encoding
+Cache-Control: no-cache
+Etag: "604c202c5a97dc02a6ec0bc6c112a595"
+Pragma: no-cache
+Expires: Tue, 22 Mar 2016 18:21:18 GMT
+Content-Disposition: inline; filename="passing.svg"
+Last-Modified: Sat, 19 Mar 2016 21:50:17 GMT
+Content-Encoding: gzip
+X-Content-Digest: 1425d9e03f5f52607fc4793b02421ced3007eba9
+Age: 0
+X-Rack-Cache: miss, store
+Via: 1.1 vegur
+
+<svg xmlns="http://www.w3.org/2000/svg" width="90" height="20"><linearGradient id="a" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><rect rx="3" width="90" height="20" fill="#555"/><rect rx="3" x="37" width="53" height="20" fill="#4c1"/><path fill="#4c1" d="M37 0h4v20h-4z"/><rect rx="3" width="90" height="20" fill="url(#a)"/><g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11"><text x="19.5" y="15" fill="#010101" fill-opacity=".3">build</text><text x="19.5" y="14">build</text><text x="62.5" y="15" fill="#010101" fill-opacity=".3">passing</text><text x="62.5" y="14">passing</text></g></svg>

@@ -1,4 +1,14 @@
-((("apx_npi_service" .
+((("first_name" .
+   [0 0 0 0 0 1 0 0 0 0])
+  ("cohort" .
+   [1 0 0 0 0 1])
+  ("info" .
+   [1 0 0 0])
+  ("logger" .
+   [1 0 0 0 0 0])
+  ("last_name" .
+   [2 0 0 0 0 0 0 0 0])
+  ("apx_npi_service" .
    [1 0 0 0 1 0 0 0 0 0 0 0 0 0 0])
   ("echo" .
    [2 0 0 0])
