@@ -50,7 +50,9 @@
 (set 'load-path
      (append load-path
 	     (list
-	      "~/.emacs.d"
+	      "~/.emacs.d/lisp"
+	      "~/.emacs.d/markdown-mode"
+	      "~/.emacs.d/color-theme-6.6.0"
 	      "~/.emacs.d/scala-2.7.5.final/misc/scala-tool-support/emacs")))
 
 ;; for old style NT Emacs, which did not have an installer, we help out
@@ -87,7 +89,6 @@
         (set-background-color "black"))
        ((eq system-type 'x) 
         (set-background-color "black")))
-
       (GNUEmacs
        ;; setup alist for future frames
        (setq default-frame-alist
@@ -177,7 +178,6 @@
 (setq exec-path (cons "/usr/local/bin" exec-path)) 
 ;(require 'erlang-start)
 
-
 ;; python setup
 (setq python-shell-interpreter "/usr/local/bin/ipython"
       python-shell-interpreter-args "--colors=NoColor" 
@@ -194,6 +194,7 @@
 (add-to-list 'auto-mode-alist '("\\.py\\'"  . python-mode))
 (setq py-install-directory "~/.emacs.d/python-mode.el-6.1.1/")
 (add-to-list 'load-path py-install-directory)
+
 (if (Emacs-version "GNU Emacs 24")
     (require 'python-mode))
 
@@ -217,7 +218,6 @@
 ;; history of regexprs
 ;;    "\\[0;31m\\|\\[1;31m\\|\\[0m1\\|\\|\\[0;34m\\|\\[1;34m\\|\\[0m\\|"
 ;;
-
 (if window-system
     (progn
       (require 'fill-column-indicator-settings)
@@ -230,6 +230,20 @@
       (require 'ess-settings))
   (message "emacs version too low, not including ess or scala packages"))
 
+;; markdown support - requires https://github.com/jrblevin/markdown-mode.git
+(setq markdown-command "/usr/local/bin/markdown")
+(autoload 'markdown-mode "markdown-mode"
+   "Major mode for editing Markdown files" t)
+;(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+;; color-themes - now we get to skin emacs!
+(eval-after-load "color-theme"
+  '(progn
+     (color-theme-initialize)
+     (color-theme-hober)))
+
 ;;
 ;; Setup preferred function keys
 ;;
@@ -237,6 +251,8 @@
 (global-set-key [f3] 'other-frame)
 (global-set-key [f4] 'menu-bar-mode) 
 (global-set-key [f5] 'font-lock-fontify-buffer)  ;;; hilit-rehighlight-buffer)
+
+(global-set-key (kbd "s-p") 'comint-previous-input)
 
 ;;
 ;; for some reason ^Q has been hi-jacked so we'll set C-c C-i to quoted-insert
