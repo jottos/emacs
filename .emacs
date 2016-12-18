@@ -19,12 +19,21 @@
 ;;;
 ;;;  Emacs  initialization file for JOS
 ;;; 
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (defmacro GNUEmacs (&rest x)
   (list 'if (string-match "GNU Emacs" (version)) (cons 'progn x)))
 (defmacro XEmacs (&rest x)
   (list 'if (string-match "XEmacs" (version)) (cons 'progn x)))
 (defmacro NextStep (&rest x)
-  (list 'if (string-match "NS apple" (version)) (cons 'progn x)))
+  (list 'if (or (string-match "NS appkit" (version))
+		(string-match "NS apple" (version)))
+	(cons 'progn x)))
 (defmacro Emacs-version (x)
   (list 'string-match x (version)))
 (defmacro dont-execute (&rest x)
@@ -243,6 +252,13 @@
   '(progn
      (color-theme-initialize)
      (color-theme-hober)))
+
+
+;; add neotree server to package system
+;(add-to-list 'package-archives
+;	     '("melpa" . "http://melpa.org/packages/"))
+(setq neo-theme (if window-system 'icons 'arrow))
+
 
 ;;
 ;; Setup preferred function keys
