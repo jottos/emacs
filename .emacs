@@ -20,13 +20,9 @@
 ;;;  Emacs  initialization file for JOS
 ;;; 
 
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
-
 (defmacro GNUEmacs (&rest x)
+  (list 'if (string-match "GNU Emacs" (version)) (cons 'progn x)))
+(defmacro GNUEmacs24 (&rest x)
   (list 'if (string-match "GNU Emacs" (version)) (cons 'progn x)))
 (defmacro XEmacs (&rest x)
   (list 'if (string-match "XEmacs" (version)) (cons 'progn x)))
@@ -38,6 +34,14 @@
   (list 'string-match x (version)))
 (defmacro dont-execute (&rest x)
   (list 'if nil (cons 'progn x)))
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(if (or (Emacs-version "Emacs 24") (Emacs-version "Emacs 25"))
+    (package-initialize))
+
 
 ;; Colors!
 ;;
