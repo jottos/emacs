@@ -321,9 +321,22 @@ you should place your code here."
   ;; set up  goto-line with a key def
   (global-set-key  (kbd "C-x C-g") 'goto-line)
 
-  (global-set-key (kbd "C-x C-t") 'multi-term)
+  (global-set-key (kbd "C-x C-t") 'switch-to-multiterm-buffer)
+  (defun switch-to-multiterm-buffer (which-terminal)
+  ;;; switch to existing multi-term buffer or create one, this version
+  ;;; this version of the function will find the most recently used terminal buffer
+  ;;; which parameter will be terminal number, not used now
+  ;;; correct behavior tbd
+    (interactive "p")
+    (defun find-buffers (prefix)
+      (seq-filter (lambda (buf) (string-prefix-p prefix (buffer-name buf)))
+                  (buffer-list)))
+    (let ((b (car (find-buffers "*term"))))
+      (if b
+          (switch-to-buffer b)
+        (nulti-term))))
 
-  ;; remap zap-to-char from M-z to c-x c-z
+;; remap zap-to-char from M-z to c-x c-z
   (global-set-key  (kbd "C-x C-z") 'zap-to-char)
 
   ;; set up  scroll window by one defs then bind keys C-z and M-z. a jos fave
