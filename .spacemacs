@@ -334,7 +334,7 @@ you should place your code here."
     (let ((b (car (find-buffers "*term"))))
       (if b
           (switch-to-buffer b)
-        (nulti-term))))
+        (multi-term))))
 
 ;; remap zap-to-char from M-z to c-x c-z
   (global-set-key  (kbd "C-x C-z") 'zap-to-char)
