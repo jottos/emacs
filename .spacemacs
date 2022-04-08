@@ -6,6 +6,8 @@
   "Configuration Layers declaration.
 You should not put any user code in this function besides modifying the variable
 values."
+  (message "YO YO - in the dotospacemacs/layers function")
+
   (setq-default
    ;; Base distribution to use. This is a layer contained in the directory
    ;; `+distribution'. For now available distributions are `spacemacs-base'
@@ -31,25 +33,29 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     shell-scripts
-     javascript
-     csv
-     python
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     html
+     yaml
+     sql
+     shell-scripts
+     javascript
+     csv
+     python
+
      helm
      ;; auto-completion
      ;; better-defaults
      emacs-lisp
      git
      markdown
-     ;;org
+     org
      (shell :variables
-             shell-default-height 30
-             shell-default-position 'bottom)
+            shell-default-height 30
+            shell-default-position 'bottom)
      ;; spell-checking
      syntax-checking
      ;; version-control
@@ -58,7 +64,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(protobuf-mode)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -70,7 +76,11 @@ values."
    ;; `used-but-keep-unused' installs only the used packages but won't uninstall
    ;; them if they become unused. `all' installs *all* packages supported by
    ;; Spacemacs and never uninstall them. (default is `used-only')
-   dotspacemacs-install-packages 'used-only))
+
+   ;; jos - we can change this to 'used-but-keep-unused so that protobuff doesn't get deleted
+   ;; or we can set dotspacemacs-additional-packages above
+   dotspacemacs-install-packages 'used-only)
+  (message "OY OY - leaving the dotospacemacs/layers function"))
 
 (defun dotspacemacs/init ()
   "Initialization function.
@@ -80,6 +90,8 @@ You should not put any user code in there besides modifying the variable
 values."
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
+  (message "YO YO - in the dotospacemacs/init function")
+
   (setq-default
    ;; If non nil ELPA repositories are contacted via HTTPS whenever it's
    ;; possible. Set it to nil if you have no way to use HTTPS in your
@@ -136,9 +148,18 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
+   ;; how to get source code pro onto your mac
+   ;;  https://coder-question.com/cq-blog/179919
+   ;;  curl -LO https://github.com/adobe-fonts/source-code-pro/archive/release.zip
+   ;;  unzip release.zip
+   ;;  cp -a source-code-pro-release/TTF/* ~/Library/Fonts
+   ;;   followed by
+   ;;  cd ~/Library/Fonts
+   ;;  curl -LO https://github.com/google/fonts/raw/master/ofl/inconsolata/Inconsolata-Regular.ttf
+   ;;  curl -LO https://github.com/google/fonts/raw/master/ofl/inconsolata/Inconsolata-Bold.ttf
    dotspacemacs-default-font '("Source Code Pro"
                                :size 13
-                               :weight normal
+                               :weight light
                                :width normal
                                :powerline-scale 1.1)
    ;; The leader key
@@ -284,7 +305,7 @@ values."
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `ag', `pt', `ack' and `grep'.
    ;; (default '("ag" "pt" "ack" "grep"))
-   dotspacemacs-search-tools '("ag" "pt" "ack" "grep")
+   dotspacemacs-persistent-serveracemacs-search-tools '("ag" "pt" "ack" "grep")
    ;; The default package repository used if no explicit repository has been
    ;; specified with an installed package.
    ;; Not used for now. (default nil)
@@ -295,7 +316,8 @@ values."
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
    dotspacemacs-whitespace-cleanup nil
-   ))
+   )
+  (message "OY OY - leaving the dotospacemacs/init function"))
 
 (defun dotspacemacs/user-init ()
   "Initialization function for user code.
@@ -314,14 +336,46 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   ;; JOS customizations
+  (message "YO YO - in the dotospacemacs/user-config function")
+  ;; jos (format "fmt string %s %d" "foo" 10)
+  ;; and message is format that goes to the message line and buffer
+  ;;(message "dotspacemacs-additional-packages is: %s" dotspacemacs-additional-packages)
+
+  ;; make the meta key work!!
+  (setq mac-command-modifier 'meta)
+
+  ;; add lisp and any subdirs to load-path
+  (add-to-list 'load-path "~/.emacs.d/lisp/")
+  (let ((default-directory  "~/.emacs.d/lisp/"))
+    (normal-top-level-add-subdirs-to-load-path))
+
+  ;; emacs-livedown markdown viewer
+  ;; when this fails on a new install of emacs
+  ;; 1. npm --global install livedown
+  ;; 2. git clone https://github.com/shime/emacs-livedown.git ~/.emacs.d/emacs-livedown
+  ;; 
+  ;; https://github.com/shime/emacs-livedown
+  (add-to-list 'load-path "~/.emacs.d/emacs-livedown")
+  (require 'livedown)
+
+  (require 'protobuf-mode)
+  (add-to-list 'auto-mode-alist '("\\.proto\\'" . protobuf-mode))
+  (add-to-list 'auto-mode-alist '("\\.scala\\'" . scala-mode))
+
+  (defconst my-protobuf-style
+    '((c-basic-offset . 2)
+      (indent-tabs-mode . nil)))
+  (add-hook 'protobuf-mode-hook
+            ; adds the style defined above
+            (lambda () (c-add-style "my-style" my-protobuf-style t)))
 
   ;; Use electric-buffer-edit instead of list-buffers
   (global-set-key (kbd "C-x C-b") 'electric-buffer-list)
 
   ;; set up  goto-line with a key def
   (global-set-key  (kbd "C-x C-g") 'goto-line)
+  (global-set-key (kbd "C-c C-t") 'switch-to-multiterm-buffer)
 
-  (global-set-key (kbd "C-x C-t") 'switch-to-multiterm-buffer)
   (defun switch-to-multiterm-buffer (which-terminal)
   ;;; switch to existing multi-term buffer or create one, this version
   ;;; this version of the function will find the most recently used terminal buffer
@@ -336,7 +390,7 @@ you should place your code here."
           (switch-to-buffer b)
         (multi-term))))
 
-;; remap zap-to-char from M-z to c-x c-z
+  ;; remap zap-to-char from M-z to c-x c-z
   (global-set-key  (kbd "C-x C-z") 'zap-to-char)
 
   ;; set up  scroll window by one defs then bind keys C-z and M-z. a jos fave
@@ -398,23 +452,21 @@ you should place your code here."
   ;; time in mode line
   (display-time)
 
-  (custom-set-variables
-   '(term-default-bg-color "#000000")        ;; multi-term background color (black)
-   '(term-default-fg-color "#dddd00"))       ;; multi-term foreground color (yellow)
-  )
+;  (custom-set-variables
+;   '(dotspacemacs-additional-packages '(protobuf-mode))
+;   '(term-default-bg-color "#000000")        ;; multi-term background color (black)
+;   '(term-default-fg-color "#dddd00"))       ;; multi-term foreground color (yellow)
 
-;; Do not write anything past this comment. This is where Emacs will
-;; auto-generate custom variable definitions.
+  (message "OY OY - leaving the dotospacemacs/user-config function"))
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   (quote
-    (insert-shebang fish-mode ido-occur web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-refrmoat js2-refactor yasnippet multiple-cursors js2-mode js-doc coffee-mode csv-mode xterm-color smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup htmlize helm-gitignore gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md flycheck-pos-tip pos-tip flycheck evil-magit magit git-commit with-editor transient eshell-z eshell-prompt-extras esh-help yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode anaconda-mode pythonic ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
- '(term-default-bg-color "#000000")
- '(term-default-fg-color "#dddd00"))
+   '(org-category-capture alert log4e gntp markdown-mode dash skewer-mode simple-httpd json-snatcher yasnippet multiple-cursors js2-mode haml-mode pos-tip flycheck pythonic magit-popup magit magit-section git-commit with-editor transient helm-gitignore yapfify yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree toc-org tagedit sql-indent spaceline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs request rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode protobuf-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file neotree multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint json-mode js2-refactor js-doc insert-shebang indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-css-scss helm-ag google-translate golden-ratio gnuplot git-timemachine git-messenger git-link gh-md flycheck-pos-tip flx-ido fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump diminish define-word cython-mode csv-mode column-enforce-mode coffee-mode clean-aindent-mode auto-highlight-symbol auto-compile anaconda-mode aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -422,3 +474,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(term ((t (:background "black" :foreground "#b2b2b2"))) nil "JOS Changing background of multiterm font"))
 
+;;; jos this .spacemace works with this release of spacemacs
+;;; jos@hobbes .emacs.d % git log -1 --oneline
+;; a027f34a9 (HEAD -> develop, origin/develop, origin/HEAD) spacemacs-navigation:; golden-ratio fix for SPC w TAB. (#15374)
+;;; also tested with g5c0650282 on the develop branch on emacs 28.1
