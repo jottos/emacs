@@ -38,6 +38,7 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     csv
      html
      yaml
      sql
@@ -45,7 +46,6 @@ values."
      javascript
      csv
      python
-
      helm
      ;; auto-completion
      ;; better-defaults
@@ -119,7 +119,7 @@ values."
    ;; (default 'vim)
    dotspacemacs-editing-style 'emacs
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
-   dotspacemacs-verbose-loading nil
+   dotspacemacs-verbose-loading t
    ;; Specify the startup banner. Default value is `official', it displays
    ;; the official spacemacs logo. An integer value is the index of text
    ;; banner, `random' chooses a random text banner in `core/banners'
@@ -148,18 +148,9 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   ;; how to get source code pro onto your mac
-   ;;  https://coder-question.com/cq-blog/179919
-   ;;  curl -LO https://github.com/adobe-fonts/source-code-pro/archive/release.zip
-   ;;  unzip release.zip
-   ;;  cp -a source-code-pro-release/TTF/* ~/Library/Fonts
-   ;;   followed by
-   ;;  cd ~/Library/Fonts
-   ;;  curl -LO https://github.com/google/fonts/raw/master/ofl/inconsolata/Inconsolata-Regular.ttf
-   ;;  curl -LO https://github.com/google/fonts/raw/master/ofl/inconsolata/Inconsolata-Bold.ttf
    dotspacemacs-default-font '("Source Code Pro"
                                :size 13
-                               :weight light
+                               :weight normal
                                :width normal
                                :powerline-scale 1.1)
    ;; The leader key
@@ -301,11 +292,11 @@ values."
    dotspacemacs-highlight-delimiters 'all
    ;; If non nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
-   dotspacemacs-persistent-server nil
+   dotspacemacs-persistent-server t
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `ag', `pt', `ack' and `grep'.
    ;; (default '("ag" "pt" "ack" "grep"))
-   dotspacemacs-persistent-serveracemacs-search-tools '("ag" "pt" "ack" "grep")
+   dotspacemacs-search-tools '("ag" "pt" "ack" "grep")
    ;; The default package repository used if no explicit repository has been
    ;; specified with an installed package.
    ;; Not used for now. (default nil)
@@ -337,26 +328,72 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   ;; JOS customizations
   (message "YO YO - in the dotospacemacs/user-config function")
-  ;; jos (format "fmt string %s %d" "foo" 10)
+  ;; jos how to format stuff -  (format "fmt string %s %d" "foo" 10)
   ;; and message is format that goes to the message line and buffer
-  ;;(message "dotspacemacs-additional-packages is: %s" dotspacemacs-additional-packages)
+  (message "dotspacemacs-additional-packages is: %s" dotspacemacs-additional-packages)
+
+  ;; jos - do we have an opinion here?
+  ;;(setq neo-theme 'nerd)
 
   ;; make the meta key work!!
   (setq mac-command-modifier 'meta)
+
+  ;; Use electric-buffer-edit instead of list-buffers
+  (global-set-key (kbd "C-x C-b") 'electric-buffer-list)
+  ;; set up  goto-line with a key def
+  (global-set-key  (kbd "C-x C-g") 'goto-line)
+  ;; remap zap-to-char from M-z to c-x c-z
+  (global-set-key  (kbd "C-x C-z") 'zap-to-char)
+  ;; our home grown goto terminal binding
+
+  ;; defining C-z in evil is tricky, you have to unbind from evil mode first
+  ;; answer here, https://github.com/syl20bnr/spacemacs/issues/7372
+  ;; more into here, https://github.com/syl20bnr/spacemacs/wiki/Keymaps-guide
+  (define-key evil-emacs-state-map (kbd "C-z") nil)
+
+  (global-set-key (kbd "C-c C-t") 'switch-to-multiterm-buffer)
+  (global-set-key (kbd "C-z") 'scroll-one-up)
+  (global-set-key (kbd "M-z") 'scroll-one-down)
+  (global-set-key "%" 'match-paren)
+  (global-set-key (kbd "C-x C-c") 'no-exit)
+
+
+
+
+  (set-background-color "grey5")
+
+  ;; enable mini buffer
+  (put 'eval-expression 'disabled nil)
+
+  ;; allow narrow to region
+  (put 'narrow-to-region 'disabled nil)
+
+  ;;Turn on syntax highlighting everywhere
+                                        ;(global-font-lock-mode t)
+
+  ;; self explanatory, set to your favorite width
+  (setq tab-width 2)
+
+  ;; Make sure that emacs doesn't put tabs in my files
+  (setq indent-tabs-mode nil)
+
+  ;; time in mode line
+  (display-time)
+
+  ;setq? '(term-default-bg-color "#000000")        ;; multi-term background color (black)
+  ;setq? '(term-default-fg-color "#dddd00"))       ;; multi-term foreground color (yellow)
+
+  ;; fix bugs
+  ;; can't make side window only window
+  (setq helm-split-window-inside-p t)
+  ;; this no longer exists
+  ;;(helm-auto-resize-mode 1)
+
 
   ;; add lisp and any subdirs to load-path
   (add-to-list 'load-path "~/.emacs.d/lisp/")
   (let ((default-directory  "~/.emacs.d/lisp/"))
     (normal-top-level-add-subdirs-to-load-path))
-
-  ;; emacs-livedown markdown viewer
-  ;; when this fails on a new install of emacs
-  ;; 1. npm --global install livedown
-  ;; 2. git clone https://github.com/shime/emacs-livedown.git ~/.emacs.d/emacs-livedown
-  ;; 
-  ;; https://github.com/shime/emacs-livedown
-  (add-to-list 'load-path "~/.emacs.d/emacs-livedown")
-  (require 'livedown)
 
   (require 'protobuf-mode)
   (add-to-list 'auto-mode-alist '("\\.proto\\'" . protobuf-mode))
@@ -369,13 +406,8 @@ you should place your code here."
             ; adds the style defined above
             (lambda () (c-add-style "my-style" my-protobuf-style t)))
 
-  ;; Use electric-buffer-edit instead of list-buffers
-  (global-set-key (kbd "C-x C-b") 'electric-buffer-list)
-
-  ;; set up  goto-line with a key def
-  (global-set-key  (kbd "C-x C-g") 'goto-line)
-  (global-set-key (kbd "C-c C-t") 'switch-to-multiterm-buffer)
-
+  ;;; these our our homegrown helpers 
+  ;;
   (defun switch-to-multiterm-buffer (which-terminal)
   ;;; switch to existing multi-term buffer or create one, this version
   ;;; this version of the function will find the most recently used terminal buffer
@@ -390,9 +422,6 @@ you should place your code here."
           (switch-to-buffer b)
         (multi-term))))
 
-  ;; remap zap-to-char from M-z to c-x c-z
-  (global-set-key  (kbd "C-x C-z") 'zap-to-char)
-
   ;; set up  scroll window by one defs then bind keys C-z and M-z. a jos fave
   (defun scroll-one-up () 
     (interactive)
@@ -402,14 +431,6 @@ you should place your code here."
     (interactive)
     (scroll-down 1))
 
-  ;; defining C-z in evil is tricky, you have to unbind from evil mode first
-  ;; answer here, https://github.com/syl20bnr/spacemacs/issues/7372
-  ;; more into here, https://github.com/syl20bnr/spacemacs/wiki/Keymaps-guide
-  (define-key evil-emacs-state-map (kbd "C-z") nil)
-
-  (global-set-key (kbd "C-z") 'scroll-one-up)
-  (global-set-key (kbd "M-z") 'scroll-one-down)
-
   (defun match-paren (arg)
     "Go to the matching parenthesis if on parenthesis otherwise insert %."
     (interactive "p")
@@ -417,11 +438,8 @@ you should place your code here."
           ((looking-at "[])}]") (forward-char) (backward-sexp 1))
           (t (self-insert-command (or arg 1)))))
 
-  (global-set-key "%" 'match-paren)
-
   ;; get rid of C-x C-c quit
   ;;
-
   (defun no-exit ()
     (interactive)
     (beep)
@@ -430,33 +448,8 @@ you should place your code here."
           (desktop-save (getenv "HOME"))
           (save-buffers-kill-emacs))))
 
-  (global-set-key (kbd "C-x C-c") 'no-exit)
 
-  (set-background-color "grey5")
-
-  ;; enable mini buffer
-  (put 'eval-expression 'disabled nil)
-
-  ;; allow narrow to region
-  (put 'narrow-to-region 'disabled nil)
-
-  ;;Turn on syntax highlighting everywhere
-  ;(global-font-lock-mode t)
-
-  ;; self explanatory, set to your favorite width
-  (setq tab-width 2)
-
-  ;; Make sure that emacs doesn't put tabs in my files
-  (setq indent-tabs-mode nil)
-
-  ;; time in mode line
-  (display-time)
-
-;  (custom-set-variables
-;   '(dotspacemacs-additional-packages '(protobuf-mode))
-;   '(term-default-bg-color "#000000")        ;; multi-term background color (black)
-;   '(term-default-fg-color "#dddd00"))       ;; multi-term foreground color (yellow)
-
+  ;; end of dotspacemacs/user-config
   (message "OY OY - leaving the dotospacemacs/user-config function"))
 
 
@@ -466,7 +459,9 @@ you should place your code here."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(org-category-capture alert log4e gntp markdown-mode dash skewer-mode simple-httpd json-snatcher yasnippet multiple-cursors js2-mode haml-mode pos-tip flycheck pythonic magit-popup magit magit-section git-commit with-editor transient helm-gitignore yapfify yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree toc-org tagedit sql-indent spaceline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs request rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode protobuf-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file neotree multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint json-mode js2-refactor js-doc insert-shebang indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-css-scss helm-ag google-translate golden-ratio gnuplot git-timemachine git-messenger git-link gh-md flycheck-pos-tip flx-ido fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump diminish define-word cython-mode csv-mode column-enforce-mode coffee-mode clean-aindent-mode auto-highlight-symbol auto-compile anaconda-mode aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
+   '(magit-popup magit magit-section git-commit with-editor transient helm-gitignore yapfify yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree toc-org tagedit sql-indent spaceline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs request rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode protobuf-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file neotree multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint json-mode js2-refactor js-doc insert-shebang indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-css-scss helm-ag google-translate golden-ratio gnuplot git-timemachine git-messenger git-link gh-md flycheck-pos-tip flx-ido fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump diminish define-word cython-mode csv-mode column-enforce-mode coffee-mode clean-aindent-mode auto-highlight-symbol auto-compile anaconda-mode aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
+
+;; jos changes for multiterm background - really needed
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -474,7 +469,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(term ((t (:background "black" :foreground "#b2b2b2"))) nil "JOS Changing background of multiterm font"))
 
-;;; jos this .spacemace works with this release of spacemacs
+;;; jos this .spacemace works with this release of spacemacs as of 10/8/2022
+;;; it works with emacs 28.2
 ;;; jos@hobbes .emacs.d % git log -1 --oneline
 ;; a027f34a9 (HEAD -> develop, origin/develop, origin/HEAD) spacemacs-navigation:; golden-ratio fix for SPC w TAB. (#15374)
-;;; also tested with g5c0650282 on the develop branch on emacs 28.1
