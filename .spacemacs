@@ -448,6 +448,19 @@ you should place your code here."
           (desktop-save (getenv "HOME"))
           (save-buffers-kill-emacs))))
 
+  (message "OY OY - trying to add electric buffer to ignore mode")
+  (if (boundp 'global-auto-revert-ignore-modes)
+      (progn
+        (add-to-list 'global-auto-revert-ignore-modes 'buffer-menu-mode)
+        (add-to-list 'global-auto-revert-ignore-modes 'electric-buffer-menu-mode))
+    (progn
+      (setq global-auto-revert-ignore-modes '(buffer-menu-mode electric-buffer-menu-mode))))
+
+  ;; had an error that global-auto-revert-ignore-modes was not bound so checking first, if this isn't
+  ;; bound IDK if this means we don't care of auto-revert wasn't loaded yet
+  ;;(add-to-list ’global-auto-revert-ignore-modes ’buffer-menu-mode)
+  ;;(add-to-list ’global-auto-revert-ignore-modes ’electric-buffer-menu-mode)
+  (message "OY OY - trying to add electric buffer to ignore mode - worked, you can remove me now")
 
   ;; end of dotspacemacs/user-config
   (message "OY OY - leaving the dotospacemacs/user-config function"))
