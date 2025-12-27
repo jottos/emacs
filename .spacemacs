@@ -573,6 +573,15 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+  ;; Save/restore buffers + window/frame layout (incl. frame size/position)
+  ;; jos - i'm not using the subdirectory desktop and this is still ok
+  (setq desktop-dirname (expand-file-name "desktop/" spacemacs-cache-directory)
+        desktop-path (list desktop-dirname)
+        desktop-base-file-name "spacemacs.desktop"
+        desktop-save t
+        desktop-restore-frames t          ;; includes frame geometry
+        desktop-auto-save-timeout 30)     ;; seconds; 0/ nil disables autosave
+  (desktop-save-mode 1)
   )
 
 (defun dotspacemacs/user-config ()
@@ -699,7 +708,8 @@ you should place your code here."
     (beep)
     (if (yes-or-no-p "Really Exit Dude? ")
         (progn
-          (desktop-save (getenv "HOME"))
+          (desktop-save (expand-file-name "" spacemacs-cache-directory))
+          ;;(desktop-save (getenv "HOME"))
           (save-buffers-kill-emacs))))
 
   (message "OY OY - trying to add electric buffer to ignore mode")
@@ -716,6 +726,42 @@ you should place your code here."
   ;;(add-to-list ’global-auto-revert-ignore-modes ’electric-buffer-menu-mode)
   (message "OY OY - trying to add electric buffer to ignore mode - worked, you can remove me now")
 
+  ;; alternate frame geometry saving
+  ;; has bug writing out file it always writes someting tiny in wrong position
+  ;;like ((left . 1609) (top . 279) (width . 175) (height . 86))%                                                                                                                                      ➜  emacs git:(master) ✗
+  ;; (defvar jos/frame-geom-file
+  ;;   (expand-file-name "frame-geom.el" spacemacs-cache-directory))
+
+  ;; (defun jos/save-frame-geometry ()
+  ;;(message "OY OY - saving frameset")
+  ;;   (when (display-graphic-p)
+  ;;     (let* ((pos (frame-position))
+  ;;            (geom `((left . ,(car pos))
+  ;;                    (top . ,(cdr pos))
+  ;;                    (width . ,(frame-width))
+  ;;                    (height . ,(frame-height)))))
+  ;;       (make-directory (file-name-directory jos/frame-geom-file) t)
+  ;;       (with-temp-file jos/frame-geom-file
+  ;;         (prin1 geom (current-buffer))))))
+
+  ;; (defun jos/restore-frame-geometry (&optional frame)
+  ;;   (message "OY OY - restoring frameset")
+  ;;   (let ((f (or frame (selected-frame))))
+  ;;     (when (and (display-graphic-p f)
+  ;;                (file-exists-p jos/frame-geom-file))
+  ;;       (let ((geom (with-temp-buffer
+  ;;                     (insert-file-contents jos/frame-geom-file)
+  ;;                     (read (current-buffer)))))
+  ;;         (set-frame-position f (cdr (assq 'left geom)) (cdr (assq 'top geom)))
+  ;;         (set-frame-size f (cdr (assq 'width geom)) (cdr (assq 'height geom)) t)))))
+
+  ;; (add-hook 'kill-emacs-hook #'jos/save-frame-geometry)
+
+  ;; ;; Normal GUI startup
+  ;; (add-hook 'window-setup-hook #'jos/restore-frame-geometry)
+
+  ;; ;; If you ever run emacs as a daemon / emacsclient, this is the magic hook:
+  ;; (add-hook 'after-make-frame-functions #'jos/restore-frame-geometry)
   ;; end of dotspacemacs/user-config
   (message "OY OY - leaving the dotospacemacs/user-config function"))
 
